@@ -102,8 +102,45 @@ def prop_FC(csp, newVar=None):
        track of all pruned Variable,value pairs and return '''
     #IMPLEMENT
     
+    # for forward checking (where we only check constraints with one 
+    # remaining Variable) we look for unary constraints of the csp (constraints whose scope
+    # contains only one Variable) and we forward_check these constraints.
 
-    pass
+    pruned_values = []
+    
+    if newVar is None:  # check all unary constraints
+        constraints = csp.get_all_cons() 
+    else:  # Check constraints involving newVar
+        constraints = csp.get_cons_with_var(newVar)
+
+    for cst in constraints:
+        if cst.get_n_unasgn() == 1:
+            unassigned_var = None
+            for var in cst.get_scope(): # look at each var in list of vars involved in constraint
+                if not var.is_assigned():
+                    unassigned_var = var
+                    break # stop searching bc we're looking for only one unassigned var
+        
+            for val in unassigned_var.cur_domain():
+                tuples = [] # will reset each loop, should add (Variable, value) pairs for each var in scope
+                for var in cst.get_scope():
+                    if var.is_assigned():
+                        tuples.append(var.get_assigned_value())
+                    else:
+                        tuples.append(val)
+                
+                # check_tuple : takes list of vals, returns True if constraints satisfied
+                if not cst.check_tuple(tuples): # if the tuple not valid, prune 
+                    if unassigned_var.in_cur_domain(val):  # if in_cur_domain = True: not pruned
+                        unassigned_var.prune_value(val)
+                        pruned_values.append((unassigned_var, val))
+            
+            if unassigned_var.cur_domain_size() == 0:
+                return False, pruned_values
+    
+    return True, pruned_values
+
+
 
 
 def prop_GAC(csp, newVar=None):
