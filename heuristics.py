@@ -19,6 +19,7 @@
     - a Variable ordering heuristic that chooses the next Variable to be assigned 
       according to the Degree heuristic
 
+
 2. ord_mv (worth 0.25/3 points)
     - a Variable ordering heuristic that chooses the next Variable to be assigned 
       according to the Minimum-Remaining-Value heuristic
@@ -39,9 +40,19 @@ var_ordering == a function with the following template
 def ord_dh(csp):
     ''' return next Variable to be assigned according to the Degree Heuristic '''
     # IMPLEMENT
-    pass
+    
+
 
 def ord_mrv(csp):
     ''' return Variable to be assigned according to the Minimum Remaining Values heuristic '''
     # IMPLEMENT
-    pass
+    unassigned = csp.get_all_unasgn_vars()
+    minVar = None
+    minSize = float('inf')
+    for var in unassigned:
+        size = var.cur_domain_size()
+        if size < minSize:
+            minSize = size
+            minVar = var
+    return minVar
+    

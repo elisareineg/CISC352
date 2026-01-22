@@ -162,8 +162,8 @@ def prop_GAC(csp, newVar=None):
             return dfs(cst, scope, idx + 1, tup + [fixed[var]])
         else:
             # Otherwise, try all values in the current domain
-            for v in var.cur_domain():
-                if dfs(cst, scope, idx + 1, tup + [v]):
+            for val in var.cur_domain():
+                if dfs(cst, scope, idx + 1, tup + [val]):
                     return True
             return False
 
@@ -189,7 +189,7 @@ def prop_GAC(csp, newVar=None):
                     if var.cur_domain_size() == 0:
                         return False, pruned
                     
-                    # Add all related constraints (except current) to queue
+                    # Readd all related constraints (except current) to queue
                     for cst2 in csp.get_cons_with_var(var):
                         if cst2 != cst and cst2 not in queue:
                             queue.append(cst2)
