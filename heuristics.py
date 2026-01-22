@@ -40,7 +40,7 @@ var_ordering == a function with the following template
 def ord_dh(csp):
     ''' return next Variable to be assigned according to the Degree Heuristic '''
     # IMPLEMENT
-    maxDeg = float('inf')
+    maxDeg = -1
     unassigned = csp.get_all_unasgn_vars()
     selected = None
     for var in unassigned:
