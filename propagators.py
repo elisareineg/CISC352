@@ -8,6 +8,8 @@
 # desc:
 #
 
+from collections import deque
+
 
 #Look for #IMPLEMENT tags in this file. These tags indicate what has
 #to be implemented to complete problem solution.
@@ -125,9 +127,9 @@ def prop_FC(csp, newVar=None):
                 tuples = [] # will reset each loop, should add (Variable, value) pairs for each var in scope
                 for var in cst.get_scope():
                     if var.is_assigned():
-                        tuples.append(var.get_assigned_value())
+                        tuples.append(var.get_assigned_value()) # assigned var
                     else:
-                        tuples.append(val)
+                        tuples.append(val) # test val to see if constraint satis.
                 
                 # check_tuple : takes list of vals, returns True if constraints satisfied
                 if not cst.check_tuple(tuples): # if the tuple not valid, prune 
@@ -141,11 +143,118 @@ def prop_FC(csp, newVar=None):
     return True, pruned_values
 
 
+def prop_GAC(csp, newVar=None):
+    '''
+    Generalized Arc Consistency propagation.
+    Returns (True, pruned_values) if successful, (False, pruned_values) if a domain is wiped out.
+    '''
+    #IMPLEMENT
+    pruned_values = []
+    # Initialize queue
+    if newVar is None:
+        queue = [c for c in csp.get_all_cons() if c.get_n_unasgn() > 0]
+    else:
+        queue = [c for c in csp.get_cons_with_var(newVar) if c.get_n_unasgn() > 0]
+
+    while queue:
+        cst = queue.pop(0)
+        for var in cst.get_scope():
+            for val in var.cur_domain():
+                # Check if there is support for val in var for constraint c
+                """
+                def has_support(self, var, val):
+                    if (var, val) in self.sup_tuples:
+                        for t in self.sup_tuples[(var, val)]:
+                            if self.tuple_is_valid(t):
+                                return True
+                    return False
+
+                    basically checks if there's a valid assignment for the constraint w/ var = val
+
+                    No: prune val, append to pruned list. check var domain empty
+                """
+                if not cst.has_support(var, val):
+                    var.prune_value(val)
+                    pruned_values.append((var, val))
+                    if var.cur_domain_size() == 0: # edge
+                        return False, pruned_values
+                    # add all constraints containing var to the queue
+                    for cst2 in csp.get_cons_with_var(var):
+                        if cst2 != cst and cst2 not in queue: # make sure we don't add same constraint or readd same one to queue
+                            queue.append(cst2)
+    return True, pruned_values
 
 
+"""
 def prop_GAC(csp, newVar=None):
     '''Do GAC propagation. If newVar is None we do initial GAC enforce
        processing all constraints. Otherwise we do GAC enforce with
        constraints containing newVar on GAC Queue'''
     #IMPLEMENT
-    pass
+
+    def dfs(cst, tup, unassigned): # unassigned is a list
+        if len(unassigned) == 0:
+            return cst.check_tuple(tup)
+`       
+        unassigned_var = unassigned[0]
+        # LOOP THRU DOMAIN of unassigned_var, add to temporary tuple, dfs on it
+        for val in unassigned_var.cur_domain():
+            copy_tup = tup.copy()
+            copy_tup.append(val)
+
+            if dfs(cst, copy_tup, unassigned[1:]):
+                return True
+
+        return False
+
+    pruned_values = []
+    
+    queue = []
+
+# LOOP through, and we're gonna check each constrainst 
+    
+    if newVar is None:
+        queue = [x for x in csp.get_all_cons() if x.get_n_unasgn() > 0]
+    
+    else:
+       queue = [x for x in csp.get_cons_with_var(newVar) if x.get_n_unasgn() > 0]
+        
+    # loop thru every constraint in queue
+    for cst in queue:
+        # another loop to get values at the constraints, if unassigned
+        for var in cst.get_unasgn_vars():
+            for val in var.cur_domain():
+                var.assign(val)
+
+                if not dfs(cst, [], cst.get_scope()):
+                    var.prune_value(val)
+                    pruned_values.append((var,val))
+    
+    # csp that doesn't have any unassgined
+        if var.get_n_unasugn() == 0:
+            return False, pruned_values
+        
+    # CSP that doesn't have any variables at all
+
+        if var.cur_domain_size() == 0:
+            return False, pruned_values
+
+    return True, pruned_values
+    """
+
+
+
+
+
+        # need tuple of values that satisfy the constraint, list of unassigned
+
+
+
+    
+
+            
+
+
+
+
+    

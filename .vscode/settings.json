@@ -1,0 +1,5 @@
+{
+    "github.copilot.editor.enableCodeActions": false,
+    "github.copilot.chat.welcomeMessage": "never",
+    "github.copilot.editor.enableAutoCompletions": false
+}
