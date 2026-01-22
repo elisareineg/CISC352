@@ -144,46 +144,56 @@ def prop_FC(csp, newVar=None):
 
 
 def prop_GAC(csp, newVar=None):
-    '''
-    Generalized Arc Consistency propagation.
-    Returns (True, pruned_values) if successful, (False, pruned_values) if a domain is wiped out.
-    '''
+    '''Do GAC propagation. If newVar is None we do initial GAC enforce
+       processing all constraints. Otherwise we do GAC enforce with
+       constraints containing newVar on GAC Queue'''
     #IMPLEMENT
-    pruned_values = []
-    # Initialize queue
+
+    # scope: list of variables in the constraint's scope (ordered)
+    # tup: tuple of values built so far (in scope order)
+
+    def dfs(cst, scope, idx, tup):
+        if idx == len(scope):
+            # tuple is complete, check if it satisfies
+            return cst.check_tuple(tup)
+        var = scope[idx]
+        if var in fixed:
+            # If this variable is fixed, use its fixed value
+            return dfs(cst, scope, idx + 1, tup + [fixed[var]])
+        else:
+            # Otherwise, try all values in the current domain
+            for v in var.cur_domain():
+                if dfs(cst, scope, idx + 1, tup + [v]):
+                    return True
+            return False
+
+    pruned = []  
+
     if newVar is None:
-        queue = [c for c in csp.get_all_cons() if c.get_n_unasgn() > 0]
+        queue = [cst for cst in csp.get_all_cons() if cst.get_n_unasgn() > 0]
     else:
-        queue = [c for c in csp.get_cons_with_var(newVar) if c.get_n_unasgn() > 0]
+        queue = [cst for cst in csp.get_cons_with_var(newVar) if cst.get_n_unasgn() > 0]
 
     while queue:
         cst = queue.pop(0)
         for var in cst.get_scope():
-            for val in var.cur_domain():
-                # Check if there is support for val in var for constraint c
-                """
-                def has_support(self, var, val):
-                    if (var, val) in self.sup_tuples:
-                        for t in self.sup_tuples[(var, val)]:
-                            if self.tuple_is_valid(t):
-                                return True
-                    return False
-
-                    basically checks if there's a valid assignment for the constraint w/ var = val
-
-                    No: prune val, append to pruned list. check var domain empty
-                """
-                if not cst.has_support(var, val):
+            for val in list(var.cur_domain()):
+                # Fix var to val for support like in cspbase, during DFS will always use test val instead of trying all possible values for var
+                fixed = {var: val}
+                # Check if there is any supporting tuple for var=val
+                if not dfs(cst, cst.get_scope(), 0, []):
+                    # No support: prune the value
                     var.prune_value(val)
-                    pruned_values.append((var, val))
-                    if var.cur_domain_size() == 0: # edge
-                        return False, pruned_values
-                    # add all constraints containing var to the queue
-                    for cst2 in csp.get_cons_with_var(var):
-                        if cst2 != cst and cst2 not in queue: # make sure we don't add same constraint or readd same one to queue
-                            queue.append(cst2)
-    return True, pruned_values
+                    pruned.append((var, val))
 
+                    if var.cur_domain_size() == 0:
+                        return False, pruned
+                    
+                    # Add all related constraints (except current) to queue
+                    for cst2 in csp.get_cons_with_var(var):
+                        if cst2 != cst and cst2 not in queue:
+                            queue.append(cst2)
+    return True, pruned
 
 """
 def prop_GAC(csp, newVar=None):
