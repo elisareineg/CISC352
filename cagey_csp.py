@@ -87,8 +87,55 @@ An example of a 3x3 puzzle would be defined as:
 from cspbase import *
 
 def binary_ne_grid(cagey_grid):
+
     ##IMPLEMENT
-    pass
+    # vars = grid cells (r0w,col)
+    # constraints: for each row, check it's not equal to a cell in another row (r,1) != (r,2)
+    # ^ same for columns
+    # top number: (row, col)
+    # bottom number: var_array indices
+
+    n = cagey_grid[0]
+    csp = CSP("binary_ne_grid")
+
+    # vars for each cell 
+    varArr = []
+    for r in range(n):
+        row = []
+        for c in range(n):
+            var = Variable(f"Cell({r},{c})", list(range(1, n+1))) # needs name + scope
+            csp.add_var(var)
+            row.append(var)
+        varArr.append(row)
+    
+    for i in range(n):
+        for j in range(n):
+            # Row constraints
+            for k in range(j+1, n):
+                con = Constraint(f"R{i}:C{j}!=C{k}", [varArr[i][j], varArr[i][k]])
+                sat_tuples = []
+                for val1 in range(1, n+ 1):
+                    for val2 in range(1, n+1):
+                        if val1 != val2:
+                            sat_tuples.append((val1, val2))
+                con.add_satisfying_tuples(sat_tuples)
+                csp.add_constraint(con)
+            
+            # Col constraints
+            for k in range(i+1, n):
+                con = Constraint(f"C{j}:R{i}!=R{k}", [varArr[i][j], varArr[k][j]])
+                sat_tuples = []
+                for val1 in range(1, n+1):
+                    for val2 in range(1, n+1):
+                        if val1 != val2:
+                            sat_tuples.append((val1, val2))
+                con.add_satisfying_tuples(sat_tuples)
+                csp.add_constraint(con)
+    
+    return csp, varArr
+
+
+    
 
 
 def nary_ad_grid(cagey_grid):
