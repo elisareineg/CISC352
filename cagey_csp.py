@@ -108,11 +108,11 @@ def binary_ne_grid(cagey_grid):
             row.append(var)
         varArr.append(row)
     
-    for i in range(n):
-        for j in range(n):
+    for r in range(n):
+        for c in range(n):
             # Row constraints
-            for k in range(j+1, n):
-                con = Constraint(f"R{i}:C{j}!=C{k}", [varArr[i][j], varArr[i][k]])
+            for k in range(c+1, n):
+                con = Constraint(f"R{r}:C{c}!=C{k}", [varArr[r][c], varArr[r][k]])
                 sat_tuples = []
                 for val1 in range(1, n+ 1):
                     for val2 in range(1, n+1):
@@ -122,8 +122,8 @@ def binary_ne_grid(cagey_grid):
                 csp.add_constraint(con)
             
             # Col constraints
-            for k in range(i+1, n):
-                con = Constraint(f"C{j}:R{i}!=R{k}", [varArr[i][j], varArr[k][j]])
+            for k in range(r+1, n):
+                con = Constraint(f"C{c}:R{r}!=R{k}", [varArr[r][c], varArr[k][c]])
                 sat_tuples = []
                 for val1 in range(1, n+1):
                     for val2 in range(1, n+1):
