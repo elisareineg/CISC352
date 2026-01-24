@@ -16,11 +16,11 @@ solution.
 
 For example, after these three lines of code
 
-    csp, var_array = binary_ne_grid(board)
+    csp, varArr = binary_ne_grid(board)
     solver = BT(csp)
     solver.bt_search(prop_FC, var_ord)
 
-var_array is a list of all Variables in the given csp. If you are returning an entire grid's worth of Variables
+varArr is a list of all Variables in the given csp. If you are returning an entire grid's worth of Variables
 they should be arranged linearly, where index 0 represents the top left grid cell, index n-1 represents
 the top right grid cell, and index (n^2)-1 represents the bottom right grid cell. Any additional Variables you use
 should fall after that (i.e., the cage operand variables, if required).
@@ -40,7 +40,7 @@ should fall after that (i.e., the cage operand variables, if required).
 
 
 Cagey Grids are addressed as follows (top number represents how the grid cells are adressed in grid definition tuple);
-(bottom number represents where the cell would fall in the var_array):
+(bottom number represents where the cell would fall in the varArr):
 +-------+-------+-------+-------+
 |  1,1  |  1,2  |  ...  |  1,n  |
 |       |       |       |       |
@@ -93,7 +93,7 @@ def binary_ne_grid(cagey_grid):
     # constraints: for each row, check it's not equal to a cell in another row (r,1) != (r,2)
     # ^ same for columns
     # top number: (row, col)
-    # bottom number: var_array indices
+    # bottom number: varArr indices
 
     n = cagey_grid[0]
     csp = CSP("binary_ne_grid")
@@ -111,7 +111,7 @@ def binary_ne_grid(cagey_grid):
     for r in range(n):
         for c in range(n):
             # Row constraints
-            for k in range(c+1, n):
+            for k in range(c+1, n): # cell position
                 con = Constraint(f"R{r}:C{c}!=C{k}", [varArr[r][c], varArr[r][k]])
                 sat_tuples = []
                 for val1 in range(1, n+ 1):
@@ -134,13 +134,48 @@ def binary_ne_grid(cagey_grid):
     
     return csp, varArr
 
-
-    
-
-
 def nary_ad_grid(cagey_grid):
     ## IMPLEMENT
-    pass
+    n = cagey_grid[0]
+    csp = CSP("nary_ad_grid")
+
+    # vars for each cell 
+    varArr = []
+    for r in range(n):
+        row = []
+        for c in range(n):
+            var = Variable(f"Cell({r},{c})", list(range(1, n+1))) # needs name + scope
+            csp.add_var(var)
+            row.append(var)
+        varArr.append(row)
+
+    # Add n-ary all-different constraints for each row
+    for i in range(n):
+        row_vars = [varArr[i][j] for j in range(n)]
+        con = Constraint(f"Row{i}_AllDiff", row_vars)
+        
+        # permutations where all values are different in row
+        sat_tuples = []
+        from itertools import permutations
+        for perm in permutations(range(1, n+1)):
+            sat_tuples.append(perm)
+        con.add_satisfying_tuples(sat_tuples)
+        csp.add_constraint(con)
+    
+    # do same for col
+    for j in range(n):
+        col_vars = [varArr[i][j] for i in range(n)]
+        con = Constraint(f"Col{j}_AllDiff", col_vars)
+        sat_tuples = []
+        for perm in permutations(range(1, n+1)):
+            sat_tuples.append(perm)
+        
+        con.add_satisfying_tuples(sat_tuples)
+        csp.add_constraint(con)
+    
+    return csp, varArr
+    
+    
 
 def cagey_csp_model(cagey_grid):
     ##IMPLEMENT
