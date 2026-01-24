@@ -149,15 +149,15 @@ def nary_ad_grid(cagey_grid):
             row.append(var)
         varArr.append(row)
 
-    # Add n-ary all-different constraints for each row
+    # n-ary all-different constraints for each row
     for i in range(n):
         row_vars = [varArr[i][j] for j in range(n)]
         con = Constraint(f"Row{i}_AllDiff", row_vars)
         
-        # permutations where all values are different in row
+        # need permutations where all values are different in row
         sat_tuples = []
         from itertools import permutations
-        for perm in permutations(range(1, n+1)):
+        for perm in permutations(range(1, n+1)): # ex for n = 3: perm is [(1,2,3), (1,3,2), (2,1,3), (2,3,1), (3,1,2), (3,2,1)]
             sat_tuples.append(perm)
         con.add_satisfying_tuples(sat_tuples)
         csp.add_constraint(con)
@@ -167,7 +167,8 @@ def nary_ad_grid(cagey_grid):
         col_vars = [varArr[i][j] for i in range(n)]
         con = Constraint(f"Col{j}_AllDiff", col_vars)
         sat_tuples = []
-        for perm in permutations(range(1, n+1)):
+
+        for perm in permutations(range(1, n+1)): #n! perms
             sat_tuples.append(perm)
         
         con.add_satisfying_tuples(sat_tuples)
