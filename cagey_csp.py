@@ -218,16 +218,25 @@ def check_operation(values, expected, operation):
                 check_operation(values, expected, '/') or
                 check_operation(values, expected, '%'))
     
-    return False
+    return False # if any true, return that otherwise False
 
 def cagey_csp_model(cagey_grid):
-    from itertools import product # for tuples
+    from itertools import product # for generating all possible tuples
 
     # IMPLEMENT
+
+    #1. make grid
+    #2. get list of vars
+    #3. get cage cells
+    # 4. get operator variable, do check for ?
+    # 5. get cage constraints
+    #5. return csp, list of vars
+
+
     n, cages = cagey_grid
 
     #  nary_ad_grid
-    csp, grid2d = nary_ad_grid(cagey_grid)   # grid2d is n^2 list of Variables
+    csp, grid2d = nary_ad_grid(cagey_grid)   # grid2d is n^2 list of Variables like [Var(1,1), etc.]
 
     # var_array: first n^2 grid cells
     var_array = []
@@ -235,17 +244,16 @@ def cagey_csp_model(cagey_grid):
         for c in range(n):
             var_array.append(grid2d[r][c])
 
-    # add cage op variables and cage constraints
+    # add cage op variables and cage constraints. cells should have the ex. (1,1) part of var
     for (expected, cells, op) in cages:
+
         # cell variables for this cage, in given order
         cageVars = [grid2d[r-1][c-1] for (r, c) in cells]
 
-        # String part used in the operator variable's name, e.g.
-        # "Var-Cell(1,1), Var-Cell(1,2), Var-Cell(2,1), Var-Cell(2,2)"
+        # str part used in the operator variable's name, e.g. "Var-Cell(1,1), Var-Cell(1,2), Var-Cell(2,1), Var-Cell(2,2)"
+        # omatch operator var to expected
         cell_name_strs = [f"Var-Cell({r},{c})" for (r, c) in cells]
         cell_name_part = ", ".join(cell_name_strs)
-
-        # operator var name needs to match expected
         op_name = f"Cage_op({expected}:{op}:[{cell_name_part}])"
 
         
@@ -258,7 +266,7 @@ def cagey_csp_model(cagey_grid):
         """
 
         # operator domain: reference uses an 'f' dummy value, and '%' when needed (look at answer_set.py)
-        # test val f in domain but not in sat_tuples
+        # test val f in domain but not in sat_tuples, so still need?
         if op in ('%', '?'):
             # modulo only appears in some puzzles so not valid for all (check answer set)
             op_domain = ['+', '-', '/', '*', '%', 'f']
@@ -278,14 +286,16 @@ def cagey_csp_model(cagey_grid):
         sat_tuples = []
 
         if op == '?':
-        # Unknown: accept any real op (+,-,*,/,%) that makes expected true
+        # Unknown: accept any real op (+,-,*,/,%) that makes expected true. 
 
             for vals in product(*([range(1, n+1)] * len(cells))): # one range per cell
                 # * for passing each element as diff argument: ex: lst = [A, B, C] -> f(*lst) same as f(A,B,C)
                 # then product will generate cartesian product of each cage constraint (every possible assignment)
+                # add op to values to make tuple
+
                 for real_op in ['+', '-', '*', '/', '%']:
                     if check_operation(vals, expected, real_op):
-                        sat_tuples.append((real_op,) + vals)
+                        sat_tuples.append((real_op,) + vals) 
         else:
             for vals in product(*([range(1, n+1)] * len(cells))):
                 if check_operation(vals, expected, op):
