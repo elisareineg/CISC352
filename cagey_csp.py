@@ -9,6 +9,7 @@
 #
 
 #Look for #IMPLEMENT tags in this file.
+from itertools import permutations
 '''
 All models need to return a CSP object, and a list of Variable objects
 representing the board. The returned list of lists is used to access the
@@ -156,7 +157,6 @@ def nary_ad_grid(cagey_grid):
         
         # need permutations where all values are different in row
         sat_tuples = []
-        from itertools import permutations
         for perm in permutations(range(1, n+1)): # ex for n = 3: perm is [(1,2,3), (1,3,2), (2,1,3), (2,3,1), (3,1,2), (3,2,1)]
             sat_tuples.append(perm)
         con.add_satisfying_tuples(sat_tuples)
@@ -176,8 +176,122 @@ def nary_ad_grid(cagey_grid):
     
     return csp, varArr
     
+
+
+
+def check_operation(values, expected, operation):
+    if operation == "+":
+        return sum(values) == expected
+        
+    elif operation == "*":
+        product = 1
+        for val in values:
+            product *= val
+        return product == expected
+        
+    elif operation == "-":
+        sorted_vals = sorted(values, reverse=True)
+        result = sorted_vals[0] - sum(sorted_vals[1:])
+        return result == expected
     
+    elif operation == "/":
+        for perm in permutations(values):
+            result = perm[0]
+            for v in perm[1:]:
+                result = result / v
+            if result == expected:
+                return True
+        return False
+    
+    elif operation == "%":
+        for perm in permutations(values):
+            divisor = perm[0]
+            res = sum(perm[1:])
+            if res % divisor == expected: # if any perm works we can return true
+                return True
+        return False
+    
+    elif operation == '?':
+        return (check_operation(values, expected, '+') or
+                check_operation(values, expected, '-') or
+                check_operation(values, expected, '*') or
+                check_operation(values, expected, '/') or
+                check_operation(values, expected, '%'))
+    
+    return False
 
 def cagey_csp_model(cagey_grid):
-    ##IMPLEMENT
-    pass
+    from itertools import product # for tuples
+
+    # IMPLEMENT
+    n, cages = cagey_grid
+
+    #  nary_ad_grid
+    csp, grid2d = nary_ad_grid(cagey_grid)   # grid2d is n^2 list of Variables
+
+    # var_array: first n^2 grid cells
+    var_array = []
+    for r in range(n):
+        for c in range(n):
+            var_array.append(grid2d[r][c])
+
+    # add cage op variables and cage constraints
+    for (expected, cells, op) in cages:
+        # cell variables for this cage, in given order
+        cageVars = [grid2d[r-1][c-1] for (r, c) in cells]
+
+        # String part used in the operator variable's name, e.g.
+        # "Var-Cell(1,1), Var-Cell(1,2), Var-Cell(2,1), Var-Cell(2,2)"
+        cell_name_strs = [f"Var-Cell({r},{c})" for (r, c) in cells]
+        cell_name_part = ", ".join(cell_name_strs)
+
+        # operator var name needs to match expected
+        op_name = f"Cage_op({expected}:{op}:[{cell_name_part}])"
+
+        
+        """
+        test_cages_1_correct:
+        scope0 = [Variable("Cage_op(4:+:[Var-Cell11, Var-Cell12, Var-Cell21, Var-Cell22])", 
+                   ['+', '-', '/', '*', 'f']),  # <-- 'f' is in the domain
+         
+        con0.add_satisfying_tuples([('+', 1, 1, 1, 1)])  # <-- 'f' never appears here
+        """
+
+        # operator domain: reference uses an 'f' dummy value, and '%' when needed (look at answer_set.py)
+        # test val f in domain but not in sat_tuples
+        if op in ('%', '?'):
+            # modulo only appears in some puzzles so not valid for all (check answer set)
+            op_domain = ['+', '-', '/', '*', '%', 'f']
+        else:
+            op_domain = ['+', '-', '/', '*', 'f']
+
+        opVar = Variable(op_name, op_domain)
+        csp.add_var(opVar)
+        var_array.append(opVar)
+
+        # cst: operator first, then cell vars
+        con_name = f"Cage({expected}:{op}:[{cell_name_part}])"
+        scope = [opVar] + cageVars
+        con = Constraint(con_name, scope)
+
+        # build satisfying tuples 
+        sat_tuples = []
+
+        if op == '?':
+        # Unknown: accept any real op (+,-,*,/,%) that makes expected true
+
+            for vals in product(*([range(1, n+1)] * len(cells))): # one range per cell
+                # * for passing each element as diff argument: ex: lst = [A, B, C] -> f(*lst) same as f(A,B,C)
+                # then product will generate cartesian product of each cage constraint (every possible assignment)
+                for real_op in ['+', '-', '*', '/', '%']:
+                    if check_operation(vals, expected, real_op):
+                        sat_tuples.append((real_op,) + vals)
+        else:
+            for vals in product(*([range(1, n+1)] * len(cells))):
+                if check_operation(vals, expected, op):
+                    sat_tuples.append((op,) + vals)
+
+        con.add_satisfying_tuples(sat_tuples)
+        csp.add_constraint(con)
+
+    return csp, var_array
