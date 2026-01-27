@@ -11586,3 +11586,219 @@ Code quality: ?/0.25
 Running time: 2026_01_27-13:04:02
 
 ===========================================
+test_bne_grid_1 (__main__.TestBinaryGrid.test_bne_grid_1) ... ok
+test_bne_grid_2 (__main__.TestBinaryGrid.test_bne_grid_2) ... ok
+test_bne_grid_3 (__main__.TestBinaryGrid.test_bne_grid_3) ... ok
+test_bne_grid_4 (__main__.TestBinaryGrid.test_bne_grid_4) ... ok
+test_bne_grid_5 (__main__.TestBinaryGrid.test_bne_grid_5) ... ok
+test_cage_existence (__main__.TestCageConstraints.test_cage_existence) ... ok
+test_cages_1 (__main__.TestCageConstraints.test_cages_1) ... ok
+test_cages_2 (__main__.TestCageConstraints.test_cages_2) ... ok
+test_cages_3 (__main__.TestCageConstraints.test_cages_3) ... ok
+test_cages_4 (__main__.TestCageConstraints.test_cages_4) ... ok
+test_cages_5 (__main__.TestCageConstraints.test_cages_5) ... ok
+test_cages_6 (__main__.TestCageConstraints.test_cages_6) ... ok
+test_cages_7 (__main__.TestCageConstraints.test_cages_7) ... ok
+test_dh_1 (__main__.TestDH.test_dh_1) ... ok
+test_dh_2 (__main__.TestDH.test_dh_2) ... ok
+test_dh_3 (__main__.TestDH.test_dh_3) ... ok
+test_dh_4 (__main__.TestDH.test_dh_4) ... ok
+test_mrv_1 (__main__.TestMRV.test_mrv_1) ... ok
+test_mrv_2 (__main__.TestMRV.test_mrv_2) ... ok
+test_mrv_3 (__main__.TestMRV.test_mrv_3) ... ok
+test_mrv_4 (__main__.TestMRV.test_mrv_4) ... ok
+test_nary_grid_1 (__main__.TestNaryGrid.test_nary_grid_1) ... ok
+test_nary_grid_2 (__main__.TestNaryGrid.test_nary_grid_2) ... ok
+test_nary_grid_3 (__main__.TestNaryGrid.test_nary_grid_3) ... ok
+test_nary_grid_4 (__main__.TestNaryGrid.test_nary_grid_4) ... ok
+test_bin_prop_fc_0 (__main__.TestPropFC.test_bin_prop_fc_0) ... ok
+test_bin_prop_fc_1 (__main__.TestPropFC.test_bin_prop_fc_1) ... ok
+test_bin_prop_fc_2 (__main__.TestPropFC.test_bin_prop_fc_2) ... ok
+test_bin_prop_fc_3 (__main__.TestPropFC.test_bin_prop_fc_3) ... ok
+test_bin_prop_fc_4 (__main__.TestPropFC.test_bin_prop_fc_4) ... ok
+test_prop_fc_0 (__main__.TestPropFC.test_prop_fc_0) ... ok
+test_prop_fc_1 (__main__.TestPropFC.test_prop_fc_1) ... ok
+test_prop_fc_2 (__main__.TestPropFC.test_prop_fc_2) ... ok
+test_prop_fc_3 (__main__.TestPropFC.test_prop_fc_3) ... ok
+test_prop_fc_4 (__main__.TestPropFC.test_prop_fc_4) ... ok
+test_prop_GAC_0 (__main__.TestPropGAC.test_prop_GAC_0) ... ok
+test_prop_GAC_1 (__main__.TestPropGAC.test_prop_GAC_1) ... ok
+test_prop_GAC_10 (__main__.TestPropGAC.test_prop_GAC_10) ... ok
+test_prop_GAC_2 (__main__.TestPropGAC.test_prop_GAC_2) ... ok
+test_prop_GAC_3 (__main__.TestPropGAC.test_prop_GAC_3) ... ok
+test_prop_GAC_4 (__main__.TestPropGAC.test_prop_GAC_4) ... ok
+test_prop_GAC_5 (__main__.TestPropGAC.test_prop_GAC_5) ... ok
+test_prop_GAC_6 (__main__.TestPropGAC.test_prop_GAC_6) ... ok
+test_prop_GAC_7 (__main__.TestPropGAC.test_prop_GAC_7) ... ok
+test_prop_GAC_8 (__main__.TestPropGAC.test_prop_GAC_8) ... ok
+test_prop_GAC_9 (__main__.TestPropGAC.test_prop_GAC_9) ... ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 4.211s
+
+OK
+----------------------------------------------------------------------
+Time spent:
+
+test_bne_grid_1: 0.0004s
+test_bne_grid_2: 0.0004s
+test_bne_grid_3: 0.0025s
+test_bne_grid_4: 0.0056s
+test_bne_grid_5: 0.0153s
+test_cages_1: 0.0001s
+test_cages_2: 0.0001s
+test_cages_3: 0.0001s
+test_cages_4: 0.0010s
+test_cages_5: 0.0009s
+test_cages_6: 0.0005s
+test_cages_7: 0.0002s
+test_nary_grid_1: 0.0002s
+test_nary_grid_2: 0.0008s
+test_nary_grid_3: 0.0053s
+test_nary_grid_4: 0.0431s
+test_bin_prop_fc_0: 0.0006s
+test_bin_prop_fc_1: 0.0021s
+test_bin_prop_fc_2: 0.0021s
+test_bin_prop_fc_3: 0.0021s
+test_bin_prop_fc_4: 0.0020s
+test_prop_fc_0: 0.0010s
+test_prop_fc_1: 0.3961s
+test_prop_fc_2: 0.6374s
+test_prop_fc_3: 0.0011s
+test_prop_fc_4: 0.6626s
+test_prop_GAC_0: 0.0018s
+test_prop_GAC_1: 0.0051s
+test_prop_GAC_10: 0.7761s
+test_prop_GAC_2: 0.0097s
+test_prop_GAC_3: 0.0074s
+test_prop_GAC_4: 0.0068s
+test_prop_GAC_5: 0.0323s
+test_prop_GAC_6: 0.1854s
+test_prop_GAC_7: 0.0318s
+test_prop_GAC_8: 0.3791s
+test_prop_GAC_9: 0.9814s
+----------------------------------------------------------------------
+Grades:
+
+FC: 0.5/0.5
+GAC: 0.75/0.75
+MRV: 0.25/0.25
+DH: 0.25/0.25
+BINARY: 0.25/0.25
+NARY: 0.25/0.25
+CAGEY: 0.5/0.5
+
+TOTAL: 2.75/2.75
+Code quality: ?/0.25
+
+Running time: 2026_01_27-17:09:40
+
+===========================================
+test_bne_grid_1 (__main__.TestBinaryGrid.test_bne_grid_1) ... ok
+test_bne_grid_2 (__main__.TestBinaryGrid.test_bne_grid_2) ... ok
+test_bne_grid_3 (__main__.TestBinaryGrid.test_bne_grid_3) ... ok
+test_bne_grid_4 (__main__.TestBinaryGrid.test_bne_grid_4) ... ok
+test_bne_grid_5 (__main__.TestBinaryGrid.test_bne_grid_5) ... ok
+test_cage_existence (__main__.TestCageConstraints.test_cage_existence) ... ok
+test_cages_1 (__main__.TestCageConstraints.test_cages_1) ... ok
+test_cages_2 (__main__.TestCageConstraints.test_cages_2) ... ok
+test_cages_3 (__main__.TestCageConstraints.test_cages_3) ... ok
+test_cages_4 (__main__.TestCageConstraints.test_cages_4) ... ok
+test_cages_5 (__main__.TestCageConstraints.test_cages_5) ... ok
+test_cages_6 (__main__.TestCageConstraints.test_cages_6) ... ok
+test_cages_7 (__main__.TestCageConstraints.test_cages_7) ... ok
+test_dh_1 (__main__.TestDH.test_dh_1) ... ok
+test_dh_2 (__main__.TestDH.test_dh_2) ... ok
+test_dh_3 (__main__.TestDH.test_dh_3) ... ok
+test_dh_4 (__main__.TestDH.test_dh_4) ... ok
+test_mrv_1 (__main__.TestMRV.test_mrv_1) ... ok
+test_mrv_2 (__main__.TestMRV.test_mrv_2) ... ok
+test_mrv_3 (__main__.TestMRV.test_mrv_3) ... ok
+test_mrv_4 (__main__.TestMRV.test_mrv_4) ... ok
+test_nary_grid_1 (__main__.TestNaryGrid.test_nary_grid_1) ... ok
+test_nary_grid_2 (__main__.TestNaryGrid.test_nary_grid_2) ... ok
+test_nary_grid_3 (__main__.TestNaryGrid.test_nary_grid_3) ... ok
+test_nary_grid_4 (__main__.TestNaryGrid.test_nary_grid_4) ... ok
+test_bin_prop_fc_0 (__main__.TestPropFC.test_bin_prop_fc_0) ... ok
+test_bin_prop_fc_1 (__main__.TestPropFC.test_bin_prop_fc_1) ... ok
+test_bin_prop_fc_2 (__main__.TestPropFC.test_bin_prop_fc_2) ... ok
+test_bin_prop_fc_3 (__main__.TestPropFC.test_bin_prop_fc_3) ... ok
+test_bin_prop_fc_4 (__main__.TestPropFC.test_bin_prop_fc_4) ... ok
+test_prop_fc_0 (__main__.TestPropFC.test_prop_fc_0) ... ok
+test_prop_fc_1 (__main__.TestPropFC.test_prop_fc_1) ... ok
+test_prop_fc_2 (__main__.TestPropFC.test_prop_fc_2) ... ok
+test_prop_fc_3 (__main__.TestPropFC.test_prop_fc_3) ... ok
+test_prop_fc_4 (__main__.TestPropFC.test_prop_fc_4) ... ok
+test_prop_GAC_0 (__main__.TestPropGAC.test_prop_GAC_0) ... ok
+test_prop_GAC_1 (__main__.TestPropGAC.test_prop_GAC_1) ... ok
+test_prop_GAC_10 (__main__.TestPropGAC.test_prop_GAC_10) ... ok
+test_prop_GAC_2 (__main__.TestPropGAC.test_prop_GAC_2) ... ok
+test_prop_GAC_3 (__main__.TestPropGAC.test_prop_GAC_3) ... ok
+test_prop_GAC_4 (__main__.TestPropGAC.test_prop_GAC_4) ... ok
+test_prop_GAC_5 (__main__.TestPropGAC.test_prop_GAC_5) ... ok
+test_prop_GAC_6 (__main__.TestPropGAC.test_prop_GAC_6) ... ok
+test_prop_GAC_7 (__main__.TestPropGAC.test_prop_GAC_7) ... ok
+test_prop_GAC_8 (__main__.TestPropGAC.test_prop_GAC_8) ... ok
+test_prop_GAC_9 (__main__.TestPropGAC.test_prop_GAC_9) ... ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 3.722s
+
+OK
+----------------------------------------------------------------------
+Time spent:
+
+test_bne_grid_1: 0.0004s
+test_bne_grid_2: 0.0004s
+test_bne_grid_3: 0.0023s
+test_bne_grid_4: 0.0053s
+test_bne_grid_5: 0.0142s
+test_cages_1: 0.0001s
+test_cages_2: 0.0001s
+test_cages_3: 0.0001s
+test_cages_4: 0.0008s
+test_cages_5: 0.0007s
+test_cages_6: 0.0004s
+test_cages_7: 0.0002s
+test_nary_grid_1: 0.0001s
+test_nary_grid_2: 0.0007s
+test_nary_grid_3: 0.0047s
+test_nary_grid_4: 0.0380s
+test_bin_prop_fc_0: 0.0006s
+test_bin_prop_fc_1: 0.0018s
+test_bin_prop_fc_2: 0.0018s
+test_bin_prop_fc_3: 0.0019s
+test_bin_prop_fc_4: 0.0018s
+test_prop_fc_0: 0.0008s
+test_prop_fc_1: 0.4093s
+test_prop_fc_2: 0.5594s
+test_prop_fc_3: 0.0010s
+test_prop_fc_4: 0.5665s
+test_prop_GAC_0: 0.0016s
+test_prop_GAC_1: 0.0048s
+test_prop_GAC_10: 0.6677s
+test_prop_GAC_2: 0.0082s
+test_prop_GAC_3: 0.0064s
+test_prop_GAC_4: 0.0061s
+test_prop_GAC_5: 0.0276s
+test_prop_GAC_6: 0.1597s
+test_prop_GAC_7: 0.0273s
+test_prop_GAC_8: 0.3225s
+test_prop_GAC_9: 0.8631s
+----------------------------------------------------------------------
+Grades:
+
+FC: 0.5/0.5
+GAC: 0.75/0.75
+MRV: 0.25/0.25
+DH: 0.25/0.25
+BINARY: 0.25/0.25
+NARY: 0.25/0.25
+CAGEY: 0.5/0.5
+
+TOTAL: 2.75/2.75
+Code quality: ?/0.25
+
+Running time: 2026_01_27-17:14:34
+
+===========================================

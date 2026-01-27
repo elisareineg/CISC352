@@ -238,7 +238,7 @@ def cagey_csp_model(cagey_grid):
     #  nary_ad_grid
     csp, grid2d = nary_ad_grid(cagey_grid)   # grid2d is n^2 list of Variables like [Var(1,1), etc.]
 
-    # var_array: first n^2 grid cells
+    # var_array: initially first n^2 grid cells
     var_array = []
     for r in range(n):
         for c in range(n):
@@ -282,12 +282,10 @@ def cagey_csp_model(cagey_grid):
         scope = [opVar] + cageVars
         con = Constraint(con_name, scope)
 
-        # build satisfying tuples 
+        # build 
         sat_tuples = []
 
         if op == '?':
-        # Unknown: accept any real op (+,-,*,/,%) that makes expected true. 
-
             for vals in product(*([range(1, n+1)] * len(cells))): # one range per cell
                 # * for passing each element as diff argument: ex: lst = [A, B, C] -> f(*lst) same as f(A,B,C)
                 # then product will generate cartesian product of each cage constraint (every possible assignment)
